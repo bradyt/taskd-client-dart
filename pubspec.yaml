@@ -1,17 +1,28 @@
 name: taskc
 description: A Taskserver client library
 repository: https://github.com/bradyt/taskd-client-dart
-version: 0.0.0
+version: 0.0.1-nullsafety.0
+publish_to: none
 
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: '>=2.12.0-0 <3.0.0'
 
 dependencies:
-  intl: ^0.16.1
-  meta: ^1.2.4
-  uuid: ^2.2.2
+  intl:
+    git:
+      url: https://github.com/dart-lang/intl.git
+      ref: 0.17.0-nullsafety.2
+  uuid:
+    git:
+      url: https://github.com/Daegalus/dart-uuid.git
+      ref: nullsafety
+
+dependency_overrides:
+  crypto:
+    git:
+      url: https://github.com/dart-lang/crypto.git
 
 dev_dependencies:
-  pedantic:
-  test:
+  pedantic: ^1.10.0-nullsafety.3
+  test: ^1.16.0-nullsafety.13
   test_coverage:

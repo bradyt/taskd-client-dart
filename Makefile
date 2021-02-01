@@ -5,7 +5,7 @@ default: test
 format:
 	find . -name '*.dart' | entr -cs 'dart format --output=none --set-exit-if-changed .'
 
-analyze:
+analyze: pubspec.lock
 	find . -name '*.dart' | entr -cs 'dart analyze .'
 
 test: pubspec.lock

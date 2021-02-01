@@ -38,11 +38,14 @@ void main() {
           uuid: Uuid().v1(),
           entry: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
           description: 'test',
+          tags: const [],
+          annotations: const [],
+          udas: const {},
         ).toJson(),
       );
 
   group('Test synchronize', () {
-    String userKey;
+    String? userKey;
 
     test('test first sync with one task', () async {
       var response = await synchronize(
@@ -112,7 +115,8 @@ void main() {
       expect(response.payload.tasks.length, 2);
     });
     test('too many tasks', () async {
-      var payload = '{"description":"foo"}\n' * pow(2, 16);
+      // ignore: avoid_as
+      var payload = '{"description":"foo"}\n' * (pow(2, 16) as int);
 
       var response = await synchronize(
         connection: connection,
@@ -123,7 +127,8 @@ void main() {
       expect(response.header['code'], '504');
       expect(response.header['status'], 'Request too big');
 
-      payload = '{"description":"foo"}\n' * pow(2, 15);
+      // ignore: avoid_as
+      payload = '{"description":"foo"}\n' * (pow(2, 15) as int);
 
       response = await synchronize(
         connection: connection,

@@ -16,6 +16,9 @@ void main() {
         uuid: Uuid().v1(),
         entry: unixEpoch,
         description: 'test',
+        tags: const [],
+        annotations: const [],
+        udas: const {},
       );
 
       expect(
@@ -39,7 +42,8 @@ void main() {
         scheduled: unixEpoch,
         recur: 'yearly',
         mask: '--',
-        imask: Random().nextInt(pow(2, 32)),
+        // ignore: avoid_as
+        imask: Random().nextInt(pow(2, 32) as int),
         parent: Uuid().v1(),
         project: 'some_project',
         priority: 'H',
@@ -51,6 +55,7 @@ void main() {
             description: 'some annotation',
           ),
         ],
+        udas: const {'estimate': 5},
       );
 
       expect(
@@ -65,6 +70,8 @@ void main() {
         uuid: Uuid().v1(),
         entry: unixEpoch,
         description: 'test',
+        tags: const [],
+        annotations: const [],
         udas: const {'estimate': 4},
       );
 
@@ -74,11 +81,25 @@ void main() {
       );
     });
     test('test parsing json string task with tags', () {
-      expect(
-        Task.fromJson(json.decode('{"tags":["+foo"]}')),
-        // ignore: missing_required_param
-        const Task(tags: ['+foo']),
+        var uuid = Uuid().v1();
+      var fromJson = Task.fromJson(json.decode('{'
+          '"status":"pending",'
+          '"uuid":"$uuid",'
+          '"entry":"19700101T000000Z",'
+          '"description":"test",'
+          '"annotations":[],'
+          '"tags":["+foo"]'
+          '}'));
+      var fromConstructor = Task(
+        status: 'pending',
+        uuid: uuid,
+        entry: unixEpoch,
+        description: 'test',
+        tags: const ['+foo'],
+        annotations: const [],
+        udas: const {},
       );
+      expect(fromJson, fromConstructor);
     });
   });
 }

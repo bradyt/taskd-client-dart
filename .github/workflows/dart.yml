@@ -13,7 +13,7 @@ jobs:
     # available. See https://hub.docker.com/r/google/dart/ for the available
     # images.
     container:
-      image:  bradyt/dart-task
+      image:  bradyt/dart-task:2.12-beta
 
     steps:
       - uses: actions/checkout@v2
@@ -52,9 +52,6 @@ jobs:
 
       - name: test coverage
         run: dart pub run test_coverage --min-coverage 95
-
-      - name: run pub publish --dry-run
-        run: dart pub publish --dry-run
 
       - run: HOME=fixture task sync
       - run: HOME=fixture task

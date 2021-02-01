@@ -6,10 +6,13 @@ DateFormat iso8601Basic = DateFormat('yMMddTHHmmss\'Z\'');
 @immutable
 class Task {
   const Task({
-    @required this.status,
-    @required this.uuid,
-    @required this.entry,
-    @required this.description,
+    required this.status,
+    required this.uuid,
+    required this.entry,
+    required this.description,
+    required this.tags,
+    required this.annotations,
+    required this.udas,
     this.start,
     this.end,
     this.due,
@@ -24,9 +27,6 @@ class Task {
     this.project,
     this.priority,
     this.depends,
-    this.tags,
-    this.annotations,
-    this.udas,
   });
 
   factory Task.fromJson(Map rawJson) {
@@ -45,7 +45,6 @@ class Task {
         udas[entry.key] = entry.value;
       }
     }
-    udas = (udas.isEmpty) ? null : udas;
 
     return Task(
       status: json['status'],
@@ -78,20 +77,20 @@ class Task {
   final String uuid;
   final DateTime entry;
   final String description;
-  final DateTime start;
-  final DateTime end;
-  final DateTime due;
-  final DateTime until;
-  final DateTime wait;
-  final DateTime modified;
-  final DateTime scheduled;
-  final String recur;
-  final String mask;
-  final int imask;
-  final String parent;
-  final String project;
-  final String priority;
-  final String depends;
+  final DateTime? start;
+  final DateTime? end;
+  final DateTime? due;
+  final DateTime? until;
+  final DateTime? wait;
+  final DateTime? modified;
+  final DateTime? scheduled;
+  final String? recur;
+  final String? mask;
+  final int? imask;
+  final String? parent;
+  final String? project;
+  final String? priority;
+  final String? depends;
   final List<String> tags;
   final List<Annotation> annotations;
   final Map udas;
@@ -112,13 +111,13 @@ class Task {
         'imask': imask,
         'parent': parent,
         'annotations':
-            annotations?.map((annotation) => annotation.toJson())?.toList(),
+            annotations.map((annotation) => annotation.toJson()).toList(),
         'project': project,
         'tags': tags,
         'priority': priority,
         'depends': depends,
         'modified': modified,
-        if (udas != null) ...udas,
+        ...udas,
       }
         ..removeWhere((_, value) => value == null)
         ..updateAll((key, value) =>
@@ -156,8 +155,7 @@ class Task {
 
   // copied from 'package:flutter/foundation.dart'
   bool _listEquals<T>(List<T> a, List<T> b) {
-    if (a == null) return b == null;
-    if (b == null || a.length != b.length) return false;
+    if (a.length != b.length) return false;
     if (identical(a, b)) return true;
     for (var index = 0; index < a.length; index += 1) {
       if (a[index] != b[index]) return false;
@@ -167,8 +165,7 @@ class Task {
 
   // copied from 'package:flutter/foundation.dart'
   bool _mapEquals<T, U>(Map<T, U> a, Map<T, U> b) {
-    if (a == null) return b == null;
-    if (b == null || a.length != b.length) return false;
+    if (a.length != b.length) return false;
     if (identical(a, b)) return true;
     for (var key in a.keys) {
       if (!b.containsKey(key) || b[key] != a[key]) {
@@ -181,7 +178,7 @@ class Task {
 
 @immutable
 class Annotation {
-  const Annotation({@required this.entry, @required this.description});
+  const Annotation({required this.entry, required this.description});
 
   factory Annotation.fromJson(Map annotation) => Annotation(
         entry: DateTime.parse(annotation['entry']),
