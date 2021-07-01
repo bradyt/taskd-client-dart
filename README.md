@@ -1,3 +1,5 @@
+# development is merged into https://github.com/bradyt/taskw-dart
+
 An attempt to write a taskserver client library in Dart, similar to
 [taskd-client-py](https://github.com/jrabbit/taskd-client-py/).
 
